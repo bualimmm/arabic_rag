@@ -38,6 +38,18 @@ df_documents = load_data()
 api_key = st.secrets["cohere_key"]
 embed_api_key = st.secrets["cohere_embed_key"]
 
+with st.sidebar:
+    st.header("المصادقة")  # Authentication
+    password_input = st.text_input("أدخل كلمة المرور:", type="password")
+
+    if password_input == st.secrets["password"]:
+        st.success("تمت المصادقة")  # Access granted!
+        auth_status = True
+    else:
+        st.warning("كلمة المرور غير صحيحة. تم رفض المصادقة.")  # Incorrect password. Access denied.
+        auth_status = False
+
+
 # Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -48,7 +60,7 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
 
 # Get user input
-if prompt := st.chat_input("اكتب سؤالك هنا"):
+if prompt := st.chat_input("اكتب سؤالك هنا") and auth_status:
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)

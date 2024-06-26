@@ -182,5 +182,5 @@ def get_answer(input, df_documents, api_key, embed_api_key):
     embedding = get_embedding(input, embed_api_key)
     top_k_indices = retrieve_top_sentences(embedding, df_documents['embedding'].tolist(), 10)
     prompt = format_prompt(input, df_documents.iloc[top_k_indices]['sentence'].tolist())
-    answer = get_response(prompt, api_key, "qa")
+    _, answer = get_response(prompt, api_key, "qa")
     return answer
