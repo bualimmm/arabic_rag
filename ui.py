@@ -29,7 +29,7 @@ body {
 # Load data and model (using Streamlit caching for efficiency)
 @st.cache_resource
 def load_data():
-    df_documents = pd.read_pickle("document_chunks.pkl")
+    df_documents = pd.read_pickle("document_chunks_cohere.pkl")
     return df_documents
 
 df_documents = load_data()
