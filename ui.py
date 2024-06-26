@@ -40,14 +40,13 @@ embed_api_key = st.secrets["cohere_embed_key"]
 
 with st.sidebar:
     st.header("المصادقة")  # Authentication
-    password_input = st.text_input("أدخل كلمة المرور:", type="password")
-
-    if password_input == st.secrets["password"]:
-        st.success("تمت المصادقة")  # Access granted!
-        auth_status = True
-    else:
-        st.warning("كلمة المرور غير صحيحة. تم رفض المصادقة.")  # Incorrect password. Access denied.
-        auth_status = False
+    if password_input := st.text_input("أدخل كلمة المرور:", type="password"):
+        if password_input == st.secrets["password"]:
+            st.success("تمت المصادقة")  # Access granted!
+            auth_status = True
+        else:
+            st.warning("كلمة المرور غير صحيحة. تم رفض المصادقة.")  # Incorrect password. Access denied.
+            auth_status = False
 
 
 # Initialize chat history
@@ -60,7 +59,7 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
 
 # Get user input
-if prompt := st.chat_input("اكتب سؤالك هنا") and auth_status:
+if (prompt := st.chat_input("اكتب سؤالك هنا")) and auth_status:
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
