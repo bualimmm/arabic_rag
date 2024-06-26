@@ -119,9 +119,10 @@ def get_response(prompt, api_key, agent_type):
         raise ValueError("An API key should be provided to invoke the endpoint.")
     url = 'https://Cohere-command-r-plus-jnvkw-serverless.eastus2.inference.ai.azure.com/v1/chat/completions'
     headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + api_key}
+    print(system_prompt)
     data = {
         "messages": [
-            {"role": "user", "content": system_prompt+ "\n" + prompt},
+            {"role": "user", "content": system_prompt + "\n" + prompt},
         ],
         "max_tokens": 1000,
         "temperature": 0.3,
