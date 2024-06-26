@@ -1,7 +1,6 @@
 import streamlit as st
 from streamlit_chat import message
 import pandas as pd
-from sentence_transformers import SentenceTransformer
 from rag import get_answer, allowSelfSignedHttps
 
 # Enable self-signed HTTPS certificates (if needed)
@@ -29,15 +28,15 @@ body {
 
 # Load data and model (using Streamlit caching for efficiency)
 @st.cache_resource
-def load_data_and_model():
+def load_data():
     df_documents = pd.read_pickle("document_chunks.pkl")
-    model = SentenceTransformer('intfloat/multilingual-e5-large')
-    return df_documents, model
+    return df_documents
 
-df_documents, emb_model = load_data_and_model()
+df_documents = load_data()
 
 # Get API key securely from Streamlit secrets
 api_key = st.secrets["cohere_key"]
+embed_api_key = st.secrets["cohere_embed_key"]
 
 # Initialize chat history
 if "messages" not in st.session_state:
@@ -57,7 +56,7 @@ if prompt := st.chat_input("اكتب سؤالك هنا"):
     # Get answer from RAG pipeline
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
-        full_response = get_answer(prompt, df_documents, emb_model, api_key)
+        full_response = get_answer(prompt, df_documents, api_key, embed_api_key)
         message_placeholder.markdown(full_response)
 
     st.session_state.messages.append({"role": "assistant", "content": full_response})
