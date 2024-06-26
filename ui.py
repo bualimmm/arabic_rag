@@ -9,8 +9,8 @@ allowSelfSignedHttps(True)
 
 # Set page config and title
 st.set_page_config(layout="wide")
-st.title("محادثة البوت العربي")
-st.write("اطرح أسئلة حول مستنداتك وسيحاول البوت الإجابة بناءً على السياق المسترجع.")
+st.title("خبير الميزانية العامة")
+st.write("اطرح أسئلة حول بيان الميزانية العامة وسيحاول الخبير الإجابة.")
 
 # Set text direction to RTL
 st.markdown(
