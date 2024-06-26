@@ -1,0 +1,6 @@
+datasets==1.18.4
+numpy==1.25.2
+pandas==1.5.2
+pyarrow==14.0.2
+streamlit-chat==0.1.1
+sentence-transformers==3.0.1
