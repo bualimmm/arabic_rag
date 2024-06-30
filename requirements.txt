@@ -4,4 +4,8 @@ pandas==1.5.2
 pyarrow==14.0.2
 streamlit-chat==0.1.1
 streamlit~=1.36.0
-scikit-learn~=1.5.0
+httpx~=0.27.0
+loguru~=0.7.2
+faiss-cpu
+pydantic~=2.7.4
+langchain-community==0.2.6
