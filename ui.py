@@ -1,16 +1,13 @@
-import asyncio
-
 import streamlit as st
-
-# Set page config as the first command
-st.set_page_config(layout="wide")
-
+from streamlit_chat import message
+import pandas as pd
 from rag import get_answer, allowSelfSignedHttps
 
 # Enable self-signed HTTPS certificates (if needed)
 allowSelfSignedHttps(True)
 
 # Set page config and title
+st.set_page_config(layout="wide")
 st.title("خبير الميزانية العامة")
 st.write("اطرح أسئلة حول بيان الميزانية العامة وسيحاول الخبير الإجابة.")
 
@@ -29,6 +26,18 @@ body {
     unsafe_allow_html=True,
 )
 
+# Load data and model (using Streamlit caching for efficiency)
+@st.cache_resource
+def load_data():
+    df_documents = pd.read_pickle("document_chunks_cohere.pkl")
+    return df_documents
+
+df_documents = load_data()
+
+# Get API key securely from Streamlit secrets
+api_key = st.secrets["cohere_key"]
+embed_api_key = st.secrets["cohere_embed_key"]
+
 with st.sidebar:
     st.header("المصادقة")  # Authentication
     if password_input := st.text_input("أدخل كلمة المرور:", type="password"):
@@ -38,6 +47,7 @@ with st.sidebar:
         else:
             st.warning("كلمة المرور غير صحيحة. تم رفض المصادقة.")  # Incorrect password. Access denied.
             auth_status = False
+
 
 # Initialize chat history
 if "messages" not in st.session_state:
@@ -57,7 +67,7 @@ if (prompt := st.chat_input("اكتب سؤالك هنا")) and auth_status:
     # Get answer from RAG pipeline
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
-        full_response = asyncio.run(get_answer(prompt))
+        full_response = get_answer(prompt, df_documents, api_key, embed_api_key)
         message_placeholder.markdown(full_response)
 
     st.session_state.messages.append({"role": "assistant", "content": full_response})
