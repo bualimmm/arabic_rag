@@ -1,3 +1,5 @@
+# Results
+The best performing model is Cohere using chain-of-thoughts prompting whose code can be found in the notebooks/azure_models_querying.ipynb and the results can be found in outputs/cleaned/cot_cleaned_cohere_results_formal.xlsx
 # Experiments
 **Original**: Automatically extracting text through python
 
